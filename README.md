@@ -59,7 +59,7 @@ This platform provides a concrete, runnable pattern to solve that with OSS compo
 
 ## Repository layout
 
-\`\`\`text
+```text
 .
 ├─ docker-compose.yml
 ├─ .env.example
@@ -79,7 +79,7 @@ This platform provides a concrete, runnable pattern to solve that with OSS compo
    ├─ orchestrator-agent/
    ├─ agent-a/
    └─ agent-b/
-\`\`\`
+```
 
 ---
 
@@ -93,21 +93,21 @@ This platform provides a concrete, runnable pattern to solve that with OSS compo
 
 ### Start stack
 
-\`\`\`bash
+```bash
 cp .env.example .env
 make up
 make seed
-\`\`\`
+```
 
 ### Health checks
 
-\`\`\`bash
+```bash
 curl -s http://localhost:8001/health
 curl -s http://localhost:8002/health
 curl -s http://localhost:8003/health || true
 curl -s http://localhost:8004/docs >/dev/null && echo "agent-a up"
 curl -s http://localhost:8005/docs >/dev/null && echo "agent-b up"
-\`\`\`
+```
 
 ---
 
@@ -115,35 +115,35 @@ curl -s http://localhost:8005/docs >/dev/null && echo "agent-b up"
 
 ### 1) Agent A (Jira read-only) — expected ALLOW
 
-\`\`\`bash
+```bash
 curl -s -X POST http://localhost:8004/jira-read \
   -H "Content-Type: application/json" \
   -d {query:open incidents}
-\`\`\`
+```
 
 ### 2) Agent A asking Slack scope — expected DENY (403)
 
-\`\`\`bash
+```bash
 curl -i -s -X POST http://localhost:8002/token/request \
   -H "Content-Type: application/json" \
   -d agent_id:agent-a
-\`\`\`
+```
 
 ### 3) Agent B (Slack read-only) — expected ALLOW
 
-\`\`\`bash
+```bash
 curl -s -X POST http://localhost:8005/slack-read \
   -H "Content-Type: application/json" \
   -d {query:customer messages}
-\`\`\`
+```
 
 ### 4) Orchestrator aggregated answer
 
-\`\`\`bash
+```bash
 curl -s -X POST http://localhost:8003/answer \
   -H "Content-Type: application/json" \
   -d {question:What is customer ACME status?}
-\`\`\`
+```
 
 ---
 
@@ -190,12 +190,12 @@ Typical migration path:
 
 ## Developer workflow
 
-\`\`\`bash
+```bash
 make up
 make logs
 make seed
 make down
-\`\`\`
+```
 
 ---
 
