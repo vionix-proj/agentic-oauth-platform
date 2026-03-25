@@ -1,6 +1,6 @@
 # Architecture
 
-\`\`\`mermaid
+```mermaid
 flowchart LR
   O[Orchestrator Agent] --> A[Agent A]
   O --> B[Agent B]
@@ -11,7 +11,7 @@ flowchart LR
   T --> V[Vault]
   T --> J[Jira Adapter Mock]
   T --> S[Slack Adapter Mock]
-\`\`\`
+```
 
 ## Policies
 - Agent A -> allowed only `jira.read.issues`
