@@ -1,0 +1,10 @@
+{
+  "realm": "agentic",
+  "enabled": true,
+  "clients": [
+    { "clientId": "token-broker", "serviceAccountsEnabled": true, "publicClient": false, "secret": "token-broker-secret" },
+    { "clientId": "agent-a", "serviceAccountsEnabled": true, "publicClient": false, "secret": "agent-a-secret" },
+    { "clientId": "agent-b", "serviceAccountsEnabled": true, "publicClient": false, "secret": "agent-b-secret" },
+    { "clientId": "orchestrator-agent", "serviceAccountsEnabled": true, "publicClient": false, "secret": "orchestrator-secret" }
+  ]
+}

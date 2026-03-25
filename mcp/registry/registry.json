@@ -1,0 +1,19 @@
+{
+  "agents": [
+    {
+      "id": "orchestrator-agent",
+      "name": "Customer Service Orchestrator Agent",
+      "capabilities": ["invoke.agent-a", "invoke.agent-b"]
+    },
+    {
+      "id": "agent-a",
+      "name": "Agent A",
+      "capabilities": ["jira.read.issues"]
+    },
+    {
+      "id": "agent-b",
+      "name": "Agent B",
+      "capabilities": ["slack.read.channels"]
+    }
+  ]
+}

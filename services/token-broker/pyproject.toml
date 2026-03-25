@@ -1,0 +1,6 @@
+[project]
+name = "token-broker"
+version = "0.1.0"
+dependencies = ["fastapi", "uvicorn[standard]", "httpx", "pydantic", "hvac"]
+
+[tool.uv]

@@ -1,0 +1,5 @@
+[project]
+name = "agent-a"
+version = "0.1.0"
+dependencies = ["fastapi", "uvicorn[standard]", "httpx", "pydantic"]
+[tool.uv]

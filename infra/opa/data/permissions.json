@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "agent-a": ["jira.read.issues"],
+    "agent-b": ["slack.read.channels"],
+    "orchestrator-agent": ["invoke.agent-a", "invoke.agent-b"]
+  }
+}
