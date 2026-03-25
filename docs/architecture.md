@@ -25,8 +25,8 @@ flowchart LR
   T --> R[Agent Registry]
   T --> P[OPA Policy Decision Point]
   T --> V[Vault Secrets]
-  T --> J[Jira Adapter (mock)]
-  T --> S[Slack Adapter (mock)]
+  T --> J["Jira Adapter (mock)"]
+  T --> S["Slack Adapter (mock)"]
 
   K[Keycloak OAuth/OIDC] --> T
   K --> O
