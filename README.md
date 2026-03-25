@@ -2,6 +2,44 @@
 
 A centralized, open-source reference platform for **non-human identity**, **OAuth token governance**, and **policy-controlled agent access** across enterprise services (e.g., Jira, Slack) for MCP-enabled systems.
 
+## Architecture at a glance
+
+Start with the full architecture in [`docs/architecture.md`](docs/architecture.md).  
+Quickstart instructions live in [`docs/README.md`](docs/README.md).
+
+```mermaid
+flowchart LR
+  O[Customer Service Orchestrator Agent] --> A[Agent A]
+  O --> B[Agent B]
+
+  A --> T[Token Broker]
+  B --> T
+
+  T --> R[Agent Registry]
+  T --> P[OPA Policy Decision Point]
+  T --> V[Vault Secrets]
+  T --> J["Jira Adapter (mock)"]
+  T --> S["Slack Adapter (mock)"]
+
+  K[Keycloak OAuth/OIDC] --> T
+  K --> O
+  K --> A
+  K --> B
+```
+
+### Techniques this reference is meant to compare
+
+The design discussion behind this repository surfaced several complementary techniques rather than a single winner:
+
+- **Static service accounts / pre-registered OIDC clients** are still the fastest enterprise path when an IdP already supports machine identities, custom scopes, and claim-based authorization. They work well for both humans and non-human identities, but they can create friction when client registration and claim changes are centrally controlled.
+- **OAuth 2.1 security defaults** should be treated as the baseline regardless of the client type: Authorization Code + PKCE, exact redirect URI matching, no implicit flow, no password grant, short-lived tokens, and careful refresh-token handling.
+- **Dynamic Client Registration (DCR)** is useful when MCP clients need to register themselves with the authorization server instead of being pre-registered one by one. That reduces manual setup, but support varies by IdP, product edition, and enterprise policy.
+- **Client ID Metadata Documents (CIMD)** are attractive for portable MCP clients because the client identity is an HTTPS metadata document that publishes redirect URIs, supported grants, and JWKS material. This reduces per-server secret sprawl and fits cases where one agent or client needs to talk to many MCP servers.
+- **Two-layer OAuth** is often required in practice: one trust relationship from agent/client to the MCP server, and another from the MCP server or broker to downstream systems like Jira or Slack. Those scopes may align, but they are not always identical.
+- **Central broker + policy + capability mapping** is the pattern this repo emphasizes. Agents declare internal capabilities such as `jira.read.issues` or `slack.read.channels`; a broker consults registry data and policy, then issues or exchanges short-lived downstream access. That creates a paved road for developers without forcing every agent to copy-and-paste provider-specific OAuth logic.
+
+In other words, the practical architecture is not “pick only DCR” or “pick only service accounts.” It is to keep a centralized control plane, use OAuth 2.1 defaults everywhere, support DCR or CIMD where portable MCP client registration is needed, and normalize downstream access through policy-governed capability-to-scope mapping.
+
 This project demonstrates how to move from ad-hoc per-agent credentials to a central control plane where:
 
 - Agents declare what they need (`jira.read.issues`, `slack.read.channels`)
@@ -66,7 +104,7 @@ This platform provides a concrete, runnable pattern to solve that with OSS compo
 ├─ Makefile
 ├─ docs/
 │  ├─ architecture.md
-│  └─ quickstart.md
+│  └─ README.md
 ├─ infra/
 │  ├─ keycloak/        # realm bootstrap/import
 │  ├─ opa/             # policy and policy data
